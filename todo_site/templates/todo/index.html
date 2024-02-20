@@ -1,0 +1,146 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+
+    <meta charset="utf-8">
+    <title>{{ title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- Style -->
+    <style>
+        body {
+            background-image: linear-gradient(to right bottom, #8c7ae6, #fd79a8);
+            color: black
+            font-family: 'Arial', sans-serif;
+        }
+
+        .row {
+            margin-top: 20px;
+        }
+
+        .alert {
+            background-color: #3498db;
+            color: #fff;
+            border: 1px solid #2980b9;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        
+		.card {
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(0, 0, 0, 0.15);
+			background: #fff; /* White background */
+			margin-bottom: 20px;
+			border-radius: 10px;
+			padding: 20px;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			border: 1px solid #e74c3c; /* Red border */
+			transition: background-color 0.3s ease, box-shadow 0.3s ease;
+		}
+		
+		.card:hover {
+			background: #00b35d; /* Light red background on hover */
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 8px 16px rgba(0, 0, 0, 0.25);
+		}
+		
+		/* Add this if you want to style the title inside the card */
+		.card center b {
+			color: black; /* Red color for the title */
+		}
+		
+		/* Add this if you want to style the hr inside the card */
+		.card hr {
+			border-top: 1px solid #e74c3c; /* Red border for hr */
+		}
+		
+		.submit_form {
+			text-align: center;
+			padding: 15px;
+			background: #00b0b3; /* Corrected color code */
+			border-radius: 15px;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), 0 6px 20px rgba(0, 0, 0, 0.36);
+		}
+		
+		h1 {
+			color: #000;
+		}
+		
+		hr {
+			border-top: 1px solid #fff;
+			margin: 20px 0;
+		}
+		
+		.btn-primary {
+			background-color: #007bff;
+			color: #000;
+			border-radius: 8px;
+		}
+		
+		.btn-primary:hover {
+			background-color: #0056b3;
+		}
+		
+		
+    </style>
+
+</head>
+
+<body class="container-fluid">
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-info">
+                <strong>{{ message }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <center class="row">
+		{% comment %} <img src="{% static 'static/todo_app/images/blueprint.png' %}" alt="Your Image" style="max-width: 100%;">  {% endcomment %}
+        <h1><b>TODO LIST</b></h1>
+        <hr />
+    </center>
+
+    <div class="row">
+        <div class="col-md-8">
+            {% for i in list %}
+                <div class="card">
+                    <center><b>{{ i.title }}</b></center>
+                    <hr />
+                    {{ i.date }}
+                    <hr />
+                    {{ i.details }}
+                    <br />
+                    <br />
+                    <form action="/del/{{ i.id }}" method="POST" style="padding-right: 4%; padding-bottom: 3%;">
+                        {% csrf_token %}
+                        <button value="remove" type="submit" class="btn btn-primary" style="float: right;">
+                            <span class="glyphicon glyphicon-trash"></span> remove
+                        </button>
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-3">
+            <div class="submit_form">
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ forms }}
+                    <center>
+                        <input type="submit" class="btn btn-default" value="submit" />
+                    </center>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
